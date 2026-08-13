@@ -5,7 +5,28 @@
 
 
     <insert id="insertWithFlavor" parameterType="com.sky.entity.Dish" useGeneratedKeys="true" keyProperty="id">
-        insert into dish (category_id, name, image, price, description, status)
-        values (#{categoryId}, #{name}, #{image}, #{price}, #{description}, #{status})
+        insert into dish (category_id, name, image, price, description, status, create_time, update_time, create_user, update_user)
+        values (#{categoryId}, #{name}, #{image}, #{price}, #{description}, #{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})
     </insert>
+    <delete id="deleteBatch">
+        delete from dish where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="page" resultType="com.sky.vo.DishVO" >
+        select d.*, c.name as categoryName from dish d left join category c on d.category_id = c.id
+        <where>
+            <if test="status != null">
+                and d.status = #{status}
+            </if>
+            <if test="name != null and name.trim() != ''">
+                and d.name like concat('%', #{name}, '%')
+            </if>
+            <if test="categoryId != null">
+                and d.category_id = #{categoryId}
+            </if>
+        </where>
+        order by d.create_time desc
+    </select>
 </mapper>
