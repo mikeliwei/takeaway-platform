@@ -37,4 +37,11 @@ public class ShoppingCartController {
         shoppingCartService.clean();
         return Result.success();
     }
+
+    @PostMapping("/sub")
+    public Result sub(ShoppingCartDTO shoppingCartDTO) {
+        log.info("删除购物车某个商品：{}", shoppingCartDTO);
+        shoppingCartService.sub(shoppingCartDTO);
+        return Result.success();
+    }
 }
