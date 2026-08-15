@@ -18,7 +18,7 @@ public class ShoppingCartController {
     private ShoppingCartService shoppingCartService;
 
     @PostMapping("/add")
-    public Result add(ShoppingCartDTO shoppingCartDTO) {
+    public Result add(@RequestBody ShoppingCartDTO shoppingCartDTO) {
         log.info("购物车添加：{}", shoppingCartDTO);
         shoppingCartService.add(shoppingCartDTO);
         return Result.success();
